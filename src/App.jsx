@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { generateMnemonic } from 'bip39';
-import { Copy, Check } from 'lucide-react';
+import { Copy, Check, Search } from 'lucide-react';
 import { SolanaWallet } from './components/SolanaWallet';
 import { EthWallet } from './components/EthWallet';
+import ExplorerSearch from './components/ExplorerSearch';
 
 const App = () => {
   const [mnemonic, setMnemonic] = useState("");
   const [darkMode, setDarkMode] = useState(true);
   const [copied, setCopied] = useState(false);
+  const [explorerOpen, setExplorerOpen] = useState(false);
+  const [activeExplorer, setActiveExplorer] = useState(null);
 
   const toggleDarkMode = () => setDarkMode(!darkMode);
 
@@ -26,6 +29,11 @@ const App = () => {
     }
   };
 
+  const openExplorer = (type) => {
+    setActiveExplorer(type);
+    setExplorerOpen(true);
+  };
+
   return (
     <div className={`min-h-screen ${darkMode ? 'bg-black text-white' : 'bg-gray-50 text-gray-900'}`}>
       <header className={`sticky top-0 z-50 backdrop-blur-lg bg-opacity-80 ${darkMode ? 'bg-gray-900' : 'bg-white border-b border-gray-200'}`}>
@@ -33,18 +41,53 @@ const App = () => {
           <h1 className="text-2xl font-semibold flex items-center gap-2">
             <span>🪙</span> Wallet Generator
           </h1>
-          <button 
-            className={`px-4 py-2 rounded-lg ${
-              darkMode 
-                ? 'bg-gray-800 hover:bg-gray-700' 
-                : 'bg-white border border-gray-200 hover:bg-gray-50'
-            }`}
-            onClick={toggleDarkMode}
-          >
-            {darkMode ? '🌞 Light Mode' : '🌙 Dark Mode'}
-          </button>
+          <div className="flex items-center gap-4">
+            <button 
+              className={`px-4 py-2 rounded-lg ${
+                darkMode 
+                  ? 'bg-gray-800 hover:bg-gray-700' 
+                  : 'bg-white border border-gray-200 hover:bg-gray-50'
+              }`}
+              onClick={() => openExplorer('sol')}
+            >
+              <span className="flex items-center gap-2">
+                <Search size={16} />
+                SOL Explorer
+              </span>
+            </button>
+            <button 
+              className={`px-4 py-2 rounded-lg ${
+                darkMode 
+                  ? 'bg-gray-800 hover:bg-gray-700' 
+                  : 'bg-white border border-gray-200 hover:bg-gray-50'
+              }`}
+              onClick={() => openExplorer('eth')}
+            >
+              <span className="flex items-center gap-2">
+                <Search size={16} />
+                ETH Explorer
+              </span>
+            </button>
+            <button 
+              className={`px-4 py-2 rounded-lg ${
+                darkMode 
+                  ? 'bg-gray-800 hover:bg-gray-700' 
+                  : 'bg-white border border-gray-200 hover:bg-gray-50'
+              }`}
+              onClick={toggleDarkMode}
+            >
+              {darkMode ? '🌞 Light Mode' : '🌙 Dark Mode'}
+            </button>
+          </div>
         </div>
       </header>
+
+      <ExplorerSearch 
+        isOpen={explorerOpen}
+        onClose={() => setExplorerOpen(false)}
+        type={activeExplorer}
+        darkMode={darkMode}
+      />
 
       <main className="max-w-7xl mx-auto px-6 py-8">
         <section className={`rounded-xl p-8 mb-8 ${
