@@ -14,6 +14,7 @@ import RequestAirdrop from "./components/RequestAirdrop";
 
 // Import wallet styles
 import "@solana/wallet-adapter-react-ui/styles.css";
+import TokenLaunchpad from "./components/TokenLaunchpad";
 
 // Menu configuration
 const MENU_ITEMS = [
@@ -28,6 +29,12 @@ const MENU_ITEMS = [
     label: "Request Airdrop",
     icon: Coins,
     component: RequestAirdrop,
+  },
+  {
+    id: "tokenLaunchpad",
+    label: "Token Launchpad",
+    icon: Coins,
+    component: TokenLaunchpad,
   },
   {
     id: "settings",
