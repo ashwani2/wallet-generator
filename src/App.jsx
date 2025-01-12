@@ -1,5 +1,12 @@
 import React, { useState, useMemo } from "react";
-import { Menu, Wallet, Settings, Info, Coins } from "lucide-react";
+import {
+  Menu,
+  Wallet,
+  Settings,
+  Info,
+  Coins,
+  Zap,
+} from "lucide-react";
 import {
   ConnectionProvider,
   WalletProvider,
@@ -33,7 +40,7 @@ const MENU_ITEMS = [
   {
     id: "tokenLaunchpad",
     label: "Token Launchpad",
-    icon: Coins,
+    icon: Zap,
     component: TokenLaunchpad,
   },
   {
