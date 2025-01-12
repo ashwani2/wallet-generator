@@ -138,6 +138,14 @@ const TokenLaunchpad = ({ darkMode }) => {
 
             // Fetch mint metadata
             const mintAccount = await getMint(connection, new PublicKey(mint));
+            console.log(
+              {
+                mint,
+                amount: tokenAmount.uiAmount || 0,
+                decimals: mintAccount.decimals,
+              },
+              "data"
+            );
 
             return {
               mint,
@@ -250,17 +258,40 @@ const TokenLaunchpad = ({ darkMode }) => {
       )}
 
       {/* Display Wallet Tokens */}
-      {tokens.length > 0 && (
-        <div className={`mt-8 p-6 rounded-lg ${cardClasses}`}>
-          <h2 className="text-2xl font-bold text-blue-500 mb-4">Your Tokens</h2>
-          <ul>
-            {tokens.map((token, index) => (
-              <li key={index} className="mb-2">
-                <strong>Mint:</strong> {token.mint} <br />
-                <strong>Balance:</strong> {token.balance}
-              </li>
-            ))}
-          </ul>
+      {wallet.connected && tokens.length > 0 && (
+        <div className="mt-8">
+          <h2 className="text-2xl text-green-500 mb-4">Your Tokens</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {tokens.length > 0 ? (
+              tokens.map((token, index) => (
+                <div
+                  key={index}
+                  className={`p-4 border rounded-lg ${cardClasses} shadow-md flex flex-col justify-between`}
+                >
+                  <h3 className="text-lg font-semibold text-blue-500 break-words">
+                    Mint Address:
+                    <span className="block text-sm text-gray-500 mt-1">
+                      {token.mint}
+                    </span>
+                  </h3>
+                  <p className="text-gray-500 mt-2">
+                    <strong>Amount:</strong>{" "}
+                    {Number(
+                      token.amount / Math.pow(10, token.decimals)
+                    ).toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: token.decimals,
+                    })}
+                  </p>
+                  <p className="text-gray-500">
+                    <strong>Decimals:</strong> {token.decimals}
+                  </p>
+                </div>
+              ))
+            ) : (
+              <p className="text-gray-500">No tokens found for this wallet.</p>
+            )}
+          </div>
         </div>
       )}
 
